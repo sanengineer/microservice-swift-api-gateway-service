@@ -13,7 +13,7 @@ struct UserController: RouteCollection {
         
         routeGroup.get(use: getAllHandler)
         routeGroup.get(":user_id", use: getOneHandler)
-        routeGroup.post(use: createHandler)
+        routeGroup.post("auth","register",use: createHandler)
         routeGroup.post("auth","login", use: loginHandler)
         
     }
