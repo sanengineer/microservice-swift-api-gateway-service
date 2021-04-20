@@ -4,6 +4,9 @@ func routes(_ app: Application) throws {
     let userHostname: String
     let productHostname: String
     let orderHostname: String
+    let cartHostname: String
+    
+    let cartPort: String = Environment.get("CART_PORT")!
     
     if let userEnvHostname = Environment.get("USER_HOSTNAME"){
         userHostname = userEnvHostname
@@ -24,6 +27,14 @@ func routes(_ app: Application) throws {
     }
 
     
+    if let cartEnvHostname = Environment.get("CART_HOSTNAME"){
+        cartHostname = cartEnvHostname
+    } else {
+        cartHostname = "localhost"
+    }
+    
+    
+    
     app.logger.logLevel = .debug
 
     try app.register(collection: UserController(userServiceHostname: userHostname))
@@ -31,4 +42,8 @@ func routes(_ app: Application) throws {
     try app.register(collection: ProductController(productServiceHostName: productHostname))
     
     try app.register(collection: OrderController(orderServiceHostname: orderHostname))
+    
+    try app.register(collection: CartController(cartServicesHostname: cartHostname, cartServicesPort:cartPort))
+    
+    try app.register(collection: ItemController(itemServicesHostname: cartHostname, itemServicesPort: cartPort))
 }
