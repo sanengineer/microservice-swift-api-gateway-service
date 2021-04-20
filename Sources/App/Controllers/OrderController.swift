@@ -4,8 +4,8 @@ struct OrderController: RouteCollection {
     
     let orderServiceUrl: String
     
-    init(orderServiceHostname: String){
-        orderServiceUrl = "http://\(orderServiceHostname):1234"
+    init(orderServiceHostname: String, orderServicePort: String){
+        orderServiceUrl = "http://\(orderServiceHostname):\(orderServicePort)"
     }
     
     func boot(routes: RoutesBuilder) throws {
@@ -43,7 +43,6 @@ struct OrderController: RouteCollection {
     func getOrderNumbersByUserId(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
       
         let userId = try req.parameters.require("user_id", as: UUID.self)
-        
         
         return req.client.get("\(orderServiceUrl)/order/user/\(userId)/count")
     }

@@ -3,8 +3,8 @@ import Vapor
 struct UserController: RouteCollection {
     let userServiceUrl: String
     
-    init(userServiceHostname: String) {
-        userServiceUrl = "http://\(userServiceHostname):4568"
+    init(userServiceHostname: String, userServicePort: String) {
+        userServiceUrl = "http://\(userServiceHostname):\(userServicePort)"
     }
 
     

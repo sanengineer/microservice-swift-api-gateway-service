@@ -6,7 +6,10 @@ func routes(_ app: Application) throws {
     let orderHostname: String
     let cartHostname: String
     
+    let userPort: String = Environment.get("USER_PORT")!
     let cartPort: String = Environment.get("CART_PORT")!
+    let productPort: String = Environment.get("PRODUCT_PORT")!
+    let orderPort: String = Environment.get("ORDER_PORT")!
     
     if let userEnvHostname = Environment.get("USER_HOSTNAME"){
         userHostname = userEnvHostname
@@ -34,14 +37,13 @@ func routes(_ app: Application) throws {
     }
     
     
-    
     app.logger.logLevel = .debug
 
-    try app.register(collection: UserController(userServiceHostname: userHostname))
+    try app.register(collection: UserController(userServiceHostname: userHostname, userServicePort: userPort))
     
-    try app.register(collection: ProductController(productServiceHostName: productHostname))
+    try app.register(collection: ProductController(productServiceHostName: productHostname, productServicePort: productPort))
     
-    try app.register(collection: OrderController(orderServiceHostname: orderHostname))
+    try app.register(collection: OrderController(orderServiceHostname: orderHostname, orderServicePort: orderPort))
     
     try app.register(collection: CartController(cartServicesHostname: cartHostname, cartServicesPort:cartPort))
     

@@ -4,8 +4,8 @@ struct ProductController: RouteCollection {
     
     let productServiceUrl:String
     
-    init(productServiceHostName: String) {
-        productServiceUrl = "http://\(productServiceHostName):5689"
+    init(productServiceHostName: String, productServicePort: String) {
+        productServiceUrl = "http://\(productServiceHostName):\(productServicePort)"
     }
     
     
