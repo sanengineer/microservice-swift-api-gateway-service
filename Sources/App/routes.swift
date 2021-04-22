@@ -5,11 +5,13 @@ func routes(_ app: Application) throws {
     let productHostname: String
     let orderHostname: String
     let cartHostname: String
+    let varianHostname: String
     
     let userPort: String = Environment.get("USER_PORT")!
     let cartPort: String = Environment.get("CART_PORT")!
     let productPort: String = Environment.get("PRODUCT_PORT")!
     let orderPort: String = Environment.get("ORDER_PORT")!
+    let varianPort: String = Environment.get("VARIAN_PORT")!
     
     if let userEnvHostname = Environment.get("USER_HOSTNAME"){
         userHostname = userEnvHostname
@@ -17,11 +19,13 @@ func routes(_ app: Application) throws {
         userHostname = "localhost"
     }
     
+    
     if let productEnvHostname = Environment.get("PRODUCT_HOSTNAME"){
         productHostname = productEnvHostname
     } else {
         productHostname = "localhost"
     }
+    
     
     if let orderEnvHostname = Environment.get("ORDER_HOSTNAME"){
         orderHostname = orderEnvHostname
@@ -34,6 +38,13 @@ func routes(_ app: Application) throws {
         cartHostname = cartEnvHostname
     } else {
         cartHostname = "localhost"
+    }
+    
+    
+    if let varianEnvHostname = Environment.get("VARIAN_HOSTNAME"){
+        varianHostname = varianEnvHostname
+    } else {
+        varianHostname = "localhost"
     }
     
     
