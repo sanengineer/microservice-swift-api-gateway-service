@@ -9,9 +9,10 @@ struct VarianController: RouteCollection {
     
     
     func boot(routes: RoutesBuilder) throws {
-        let varianRouteGroup = route.grouped("api", "v1", "varian")
+        let varianRouteGroup = routes.grouped("api", "v1", "varian")
         
-        varianRouteGroup.get
+        varianRouteGroup.get(use: getAllVarian)
+        varianRouteGroup.get(use: createOneVarian)
     }
     
     
