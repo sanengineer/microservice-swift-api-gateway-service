@@ -23,7 +23,16 @@ struct OrderController: RouteCollection {
     }
     
     func getAllHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
-        return req.client.get("\(orderServiceUrl)/order")
+        return req.client.get("\(orderServiceUrl)/order"){
+            getAllOrder in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            getAllOrder.headers.add(name: .authorization, value: authHeader)
+            
+        }
     }
     
     func getOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
