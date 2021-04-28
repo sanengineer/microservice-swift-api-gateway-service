@@ -12,7 +12,7 @@ struct OrderController: RouteCollection {
         let orderRouteGroup = routes.grouped("api", "v1", "order")
         
         orderRouteGroup.get(use: getAllHandler)
-        orderRouteGroup.get(use: getAllOrderNumbers)
+        orderRouteGroup.get("count", use: getAllOrderNumbers)
         orderRouteGroup.get(":order_id", use: getOneHandler)
         orderRouteGroup.get("user",":user_id", use: getOneByUserIdHandler)
         orderRouteGroup.get("user",":user_id", "count" ,use: getOrderNumbersByUserId)
@@ -36,7 +36,7 @@ struct OrderController: RouteCollection {
         }
     }
     
-    func getAllOrderNumbers(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
+    func getAllOrderNumbers(_ req: Request) -> EventLoopFuture<ClientResponse> {
         return req.client.get("\(orderServiceUrl)/order/count"){
             get in
             

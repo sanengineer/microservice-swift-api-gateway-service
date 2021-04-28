@@ -12,7 +12,7 @@ struct VarianController: RouteCollection {
         let varianRouteGroup = routes.grouped("api", "v1", "varian")
         
         varianRouteGroup.get(use: getAllVarian)
-        varianRouteGroup.get(use: createOneVarian)
+        varianRouteGroup.post(use: createOneVarian)
     }
     
     
