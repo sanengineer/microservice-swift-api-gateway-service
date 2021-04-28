@@ -12,6 +12,7 @@ struct OrderController: RouteCollection {
         let orderRouteGroup = routes.grouped("api", "v1", "order")
         
         orderRouteGroup.get(use: getAllHandler)
+        orderRouteGroup.get(use: getAllOrderNumbers)
         orderRouteGroup.get(":order_id", use: getOneHandler)
         orderRouteGroup.get("user",":user_id", use: getOneByUserIdHandler)
         orderRouteGroup.get("user",":user_id", "count" ,use: getOrderNumbersByUserId)
@@ -35,25 +36,65 @@ struct OrderController: RouteCollection {
         }
     }
     
+    func getAllOrderNumbers(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
+        return req.client.get("\(orderServiceUrl)/order/count"){
+            get in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            get.headers.add(name: .authorization, value: authHeader)
+            
+        }
+    }
+    
     func getOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
     
         let id = try req.parameters.require("order_id", as: UUID.self)
         
-        return req.client.get("\(orderServiceUrl)/order/\(id)")
+        return req.client.get("\(orderServiceUrl)/order/\(id)"){
+            get in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            get.headers.add(name: .authorization, value: authHeader)
+            
+        }
     }
     
     func getOneByUserIdHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
         
         let userId = try req.parameters.require("user_id", as: UUID.self)
         
-        return req.client.get("\(orderServiceUrl)/order/user/\(userId)")
+        return req.client.get("\(orderServiceUrl)/order/user/\(userId)"){
+            get in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            get.headers.add(name: .authorization, value: authHeader)
+            
+        }
     }
     
     func getOrderNumbersByUserId(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
       
         let userId = try req.parameters.require("user_id", as: UUID.self)
         
-        return req.client.get("\(orderServiceUrl)/order/user/\(userId)/count")
+        return req.client.get("\(orderServiceUrl)/order/user/\(userId)/count"){
+            get in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            get.headers.add(name: .authorization, value: authHeader)
+            
+        }
     }
     
     func createHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {

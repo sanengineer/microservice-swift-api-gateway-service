@@ -59,4 +59,6 @@ func routes(_ app: Application) throws {
     try app.register(collection: CartController(cartServicesHostname: cartHostname, cartServicesPort:cartPort))
     
     try app.register(collection: ItemController(itemServicesHostname: cartHostname, itemServicesPort: cartPort))
+    
+    try app.register(collection: VarianController(varianServiceHostname: varianHostname, varianServicePort: varianPort))
 }
