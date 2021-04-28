@@ -17,7 +17,16 @@ struct VarianController: RouteCollection {
     
     
     func getAllVarian(_ req: Request) -> EventLoopFuture<ClientResponse> {
-        return req.client.get("\(varianServiceUrl)/varian")
+        return req.client.get("\(varianServiceUrl)/varian"){
+            get in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            get.headers.add(name: .authorization, value: authHeader)
+            
+        }
     }
     
     
