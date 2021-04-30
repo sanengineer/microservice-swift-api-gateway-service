@@ -12,9 +12,11 @@ struct UserController: RouteCollection {
         let routeGroup = routes.grouped("api", "v1", "user")
         
         routeGroup.get(use: getAllHandler)
+        routeGroup.get("count", use: getUsersNumber)
         routeGroup.get(":user_id", use: getOneHandler)
         routeGroup.post("auth","register",use: createHandler)
         routeGroup.post("auth","login", use: loginHandler)
+        routeGroup.put(":id", use: updateBioUser)
         
     }
     
@@ -23,6 +25,9 @@ struct UserController: RouteCollection {
         return req.client.get("\(userServiceUrl)/user")
     }
     
+    func getUsersNumber(_ req: Request) -> EventLoopFuture<ClientResponse> {
+        return req.client.get("\(userServiceUrl)/user/count")
+    }
     
     func getOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
         
@@ -39,6 +44,22 @@ struct UserController: RouteCollection {
         }
     }
     
+    func updateBioUser(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
+        let id = try req.parameters.require("id", as: UUID.self)
+        
+        return req.client.put("\(userServiceUrl)/user/\(id)"){
+            put in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            put.headers.add(name: .authorization, value: authHeader)
+            
+            try put.content.encode(req.content.decode(UpdateUserBio.self))
+        }
+    }
+    
     
     func loginHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
         
@@ -50,10 +71,4 @@ struct UserController: RouteCollection {
             loginRequst.headers.add(name: .authorization, value: authHeader)
         }
     }
-}
-
-struct CreateUserData: Content {
-    let name: String
-    let username: String
-    let password: String
 }

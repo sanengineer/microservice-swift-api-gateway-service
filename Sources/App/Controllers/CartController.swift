@@ -72,9 +72,3 @@ struct CartController: RouteCollection {
     
   
 }
-
-
-struct CreateCartData: Content {
-    let user_id: UUID
-}
-
