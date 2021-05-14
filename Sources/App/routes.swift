@@ -12,6 +12,10 @@ func routes(_ app: Application) throws {
     let productPort: String = Environment.get("PRODUCT_PORT")!
     let orderPort: String = Environment.get("ORDER_PORT")!
     let varianPort: String = Environment.get("VARIAN_PORT")!
+
+    guard let serverHostname = Environment.get("SERVER_HOSTNAME") else {
+        return print("No Env Server Hostname")
+    }
     
     if let userEnvHostname = Environment.get("USER_HOSTNAME"){
         userHostname = userEnvHostname
@@ -47,8 +51,27 @@ func routes(_ app: Application) throws {
         varianHostname = "localhost"
     }
     
+    let corsConfiguration = CORSMiddleware.Configuration(
+        allowedOrigin: .all,
+        allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent, .accessControlAllowOrigin]
+    )
+    let cors = CORSMiddleware(configuration: corsConfiguration)
+
+    // Only add this if you want to enable the default per-route logging
+    let routeLogging = RouteLoggingMiddleware(logLevel: .info)
+
+    // Add the default error middleware
+    let error = ErrorMiddleware.default(environment: app.environment)
+    // Clear any existing middleware.
+    app.middleware = .init()
+    app.middleware.use(cors)
+    app.middleware.use(routeLogging)
+    app.middleware.use(error)
+    
     
     app.logger.logLevel = .debug
+    app.http.server.configuration.hostname = serverHostname
 
     try app.register(collection: UserController(userServiceHostname: userHostname, userServicePort: userPort))
     
