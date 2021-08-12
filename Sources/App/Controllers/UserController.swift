@@ -38,7 +38,7 @@ struct UserController: RouteCollection {
     
     func createHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
         
-        return req.client.post("\(userServiceUrl)/user") {
+        return req.client.post("\(userServiceUrl)/user/auth/register") {
             createRequest in
             try createRequest.content.encode(req.content.decode(CreateUserData.self))
         }
