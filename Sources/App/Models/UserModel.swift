@@ -18,4 +18,6 @@ struct UpdateUserBio: Content {
     var residence: String?
     var shipping_address_default: String?
     var shipping_address_id: UUID?
+    var gender: String?
+    var date_of_birth: String?
 }

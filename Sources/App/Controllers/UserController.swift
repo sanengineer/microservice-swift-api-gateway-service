@@ -16,7 +16,7 @@ struct UserController: RouteCollection {
         routeGroup.get(":user_id", use: getOneHandler)
         routeGroup.post("auth","register",use: createHandler)
         routeGroup.post("auth","login", use: loginHandler)
-        routeGroup.put(":id", use: updateBioUser)
+        routeGroup.post(":id", use: updateBioUser)
         
     }
     
@@ -47,7 +47,7 @@ struct UserController: RouteCollection {
     func updateBioUser(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
         let id = try req.parameters.require("id", as: UUID.self)
         
-        return req.client.put("\(userServiceUrl)/user/\(id)"){
+        return req.client.post("\(userServiceUrl)/user/\(id)"){
             put in
             
             guard let authHeader = req.headers[.authorization].first else {
