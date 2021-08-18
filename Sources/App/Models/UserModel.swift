@@ -4,6 +4,15 @@ struct CreateUserData: Content {
     let name: String
     let username: String
     let password: String
+    let email: String
+    let role_id: Int
+}
+
+struct GetUserData: Content {
+    let name: String
+    let username: String
+    let email: String
+    let id: UUID
 }
 
 

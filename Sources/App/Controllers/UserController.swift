@@ -13,7 +13,7 @@ struct UserController: RouteCollection {
         
         routeGroup.get(use: getAllHandler)
         routeGroup.get("count", use: getUsersNumber)
-        routeGroup.get(":user_id", use: getOneHandler)
+        routeGroup.get(":id", use: getOneHandler)
         routeGroup.post("auth","register",use: createHandler)
         routeGroup.post("auth","login", use: loginHandler)
         routeGroup.post(":id", use: updateBioUser)
@@ -31,8 +31,18 @@ struct UserController: RouteCollection {
     
     func getOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
         
-        let id = try req.parameters.require("user_id", as: UUID.self)
-        return req.client.get("\(userServiceUrl)/user/\(id)")
+        let id = try req.parameters.require("id", as: UUID.self)
+        return req.client.get("\(userServiceUrl)/user/\(id)"){ get in
+            
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            //
+            print("\n","TOKENNN", authHeader, "\n")
+            
+            get.headers.add(name: .authorization, value: authHeader)
+        }
     }
     
     
@@ -63,7 +73,7 @@ struct UserController: RouteCollection {
     
     func loginHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
         
-        return req.client.post("\(userServiceUrl)/user/auth/login") { loginRequst in
+        return req.client.post("\(userServiceUrl)/user/3/auth/login") { loginRequst in
             
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)
