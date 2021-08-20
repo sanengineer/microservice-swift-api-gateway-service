@@ -1,5 +1,5 @@
 import Vapor
 
 struct CreateCartData: Content {
-    let user_id: UUID
+    var user_id: UUID
 }

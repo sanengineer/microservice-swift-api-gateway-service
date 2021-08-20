@@ -6,12 +6,14 @@ func routes(_ app: Application) throws {
     let orderHostname: String
     let cartHostname: String
     let varianHostname: String
+    let categoryHostname: String
     
     let userPort: String = Environment.get("USER_PORT")!
     let cartPort: String = Environment.get("CART_PORT")!
     let productPort: String = Environment.get("PRODUCT_PORT")!
     let orderPort: String = Environment.get("ORDER_PORT")!
     let varianPort: String = Environment.get("VARIAN_PORT")!
+    let categoryPort: String = Environment.get("CATEGORY_PORT")!
 
     guard let serverHostname = Environment.get("SERVER_HOSTNAME") else {
         return print("No Env Server Hostname")
@@ -51,6 +53,12 @@ func routes(_ app: Application) throws {
         varianHostname = "localhost"
     }
     
+    if let categoryEnvHostname = Environment.get("CATEGORY_HOSTNAME"){
+        categoryHostname = categoryEnvHostname
+    } else {
+        categoryHostname = "localhost"
+    }
+    
     let corsConfiguration = CORSMiddleware.Configuration(
         allowedOrigin: .all,
         allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
@@ -84,4 +92,6 @@ func routes(_ app: Application) throws {
     try app.register(collection: ItemController(itemServicesHostname: cartHostname, itemServicesPort: cartPort))
     
     try app.register(collection: VarianController(varianServiceHostname: varianHostname, varianServicePort: varianPort))
+    
+    try app.register(collection: CategoryController(categoryServicesHostname: categoryHostname, categoryServicesPort: categoryPort))
 }

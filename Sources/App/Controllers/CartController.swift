@@ -58,6 +58,8 @@ struct CartController: RouteCollection {
     
     func createCart(_ req: Request) -> EventLoopFuture<ClientResponse> {
         return req.client.post("\(cartServiceUrl)/cart"){ createRequest in
+
+            try createRequest.content.encode(req.content.decode(CreateCartData.self))
             
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)
@@ -65,7 +67,11 @@ struct CartController: RouteCollection {
             
             createRequest.headers.add(name: .authorization, value: authHeader)
             
-            try createRequest.content.encode(req.content.decode(CreateCartData.self))
+            //debug
+            print("\nID:", try createRequest.content.encode(req.content.decode(CreateCartData.self)),"\n")
+            print("\nAUTHHHH:",authHeader,"\n")
+            
+         
         }
     }
     
