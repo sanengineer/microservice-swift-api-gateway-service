@@ -12,7 +12,6 @@ struct VarianController: RouteCollection {
         let varianRouteGroup = routes.grouped("api", "v1", "varian")
         
         varianRouteGroup.get(use: getAllVarian)
-        varianRouteGroup.post(use: createOneVarian)
     }
     
     
@@ -28,22 +27,6 @@ struct VarianController: RouteCollection {
             
         }
     }
-    
-    
-    func createOneVarian(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
-        return req.client.post("\(varianServiceUrl)/varian"){
-            createRequest in
-            
-            guard let authHeader = req.headers[.authorization].first else {
-                throw Abort(.unauthorized)
-            }
-            
-            createRequest.headers.add(name: .authorization, value: authHeader)
-            
-            try createRequest.content.encode(req.content.decode(CreateVarianData.self))
-        }
-    }
-    
     
     
 }
