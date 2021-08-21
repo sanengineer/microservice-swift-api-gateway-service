@@ -9,7 +9,7 @@ struct UserController: RouteCollection {
 
     
     func boot(routes: RoutesBuilder) throws {
-        let routeGroup = routes.grouped("api", "v1", "user")
+        let routeGroup = routes.grouped("api", "v1", "superuser")
         
         routeGroup.get(use: getAllHandler)
         routeGroup.get("count", use: getUsersNumber)
@@ -73,7 +73,7 @@ struct UserController: RouteCollection {
     
     func loginHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
         
-        return req.client.post("\(userServiceUrl)/user/3/auth/login") { loginRequst in
+        return req.client.post("\(userServiceUrl)/superuser/auth/login") { loginRequst in
             
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)

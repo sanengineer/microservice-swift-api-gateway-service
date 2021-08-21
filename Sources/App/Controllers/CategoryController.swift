@@ -12,16 +12,12 @@ struct CategoryController: RouteCollection {
      
         
         categoryGroup.get( use: getAllCategory)
-        categoryGroup.get("superuser",use: getAllCategory)
-        categoryGroup.get("superuser",":category_id", use: getOneCategory)
         categoryGroup.get(":category_id", use: getOneCategory)
     }
     
     func getAllCategory(_ req: Request) -> EventLoopFuture<ClientResponse> {
         
-        let role_name = req.parameters.get("role_name", as: String.self)
-        
-        return req.client.get("\(categoryServiceUrl)/category/\(role_name)"){
+        return req.client.get("\(categoryServiceUrl)/category/"){
             getRequest in
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)
@@ -35,9 +31,8 @@ struct CategoryController: RouteCollection {
     func getOneCategory(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
         
         let id = try req.parameters.require("category_id", as: UUID.self)
-        let role_name = req.parameters.get("role_name", as: String.self)
         
-        return req.client.get("\(categoryServiceUrl)/category/\(role_name)/\(id)"){
+        return req.client.get("\(categoryServiceUrl)/category/\(id)"){
             getRequest in
             
             guard let authHeader = req.headers[.authorization].first else {
