@@ -10,36 +10,8 @@ struct CartController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let cartRouteGroup = routes.grouped("api","v1", "cart")
     
-        cartRouteGroup.get(use: getAllCart)
-        cartRouteGroup.get("count", use: getCountAllCart)
         cartRouteGroup.get(":cart_id", use: getOneCart)
         cartRouteGroup.post(use: createCart)
-    }
-    
-    // cart
-    func getAllCart(_ req: Request) -> EventLoopFuture<ClientResponse> {
-        
-        return req.client.get("\(cartServiceUrl)/cart") {
-            getAllCartReq in
-            
-            guard let authHeader = req.headers[.authorization].first else {
-                throw Abort(.unauthorized)
-            }
-            
-            getAllCartReq.headers.add(name: .authorization, value: authHeader)
-        }
-    }
-    
-    func getCountAllCart(_ req: Request) -> EventLoopFuture<ClientResponse> {
-        return req.client.get("\(cartServiceUrl)/cart/count"){
-            getAllCartReq in
-            
-            guard let authHeader = req.headers[.authorization].first else {
-                throw Abort(.unauthorized)
-            }
-            
-            getAllCartReq.headers.add(name: .authorization, value: authHeader)
-        }
     }
     
     func getOneCart(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
