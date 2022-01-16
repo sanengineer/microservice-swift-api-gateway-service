@@ -10,7 +10,6 @@ struct CategoryController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let categoryGroup = routes.grouped("api", "v1", "category")
      
-        
         categoryGroup.get( use: getAllCategory)
         categoryGroup.get(":category_id", use: getOneCategory)
     }

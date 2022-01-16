@@ -14,6 +14,7 @@ func routes(_ app: Application) throws {
     let orderPort: String = Environment.get("ORDER_PORT")!
     let varianPort: String = Environment.get("VARIAN_PORT")!
     let categoryPort: String = Environment.get("CATEGORY_PORT")!
+    let serverPort: Int = Int(Environment.get("SERVER_PORT")!)!
 
     guard let serverHostname = Environment.get("SERVER_HOSTNAME") else {
         return print("No Env Server Hostname")
@@ -80,6 +81,7 @@ func routes(_ app: Application) throws {
     
     app.logger.logLevel = .debug
     app.http.server.configuration.hostname = serverHostname
+    app.http.server.configuration.port = serverPort
 
     try app.register(collection: UserController(userServiceHostname: userHostname, userServicePort: userPort))
     

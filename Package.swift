@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "microservice-swift-api-gateway-service",
+    name: "microservices-api-gateway-swift-on-server-for-user",
     platforms: [
        .macOS(.v10_15)
     ],
