@@ -9,13 +9,26 @@ struct UserController: RouteCollection {
 
     
     func boot(routes: RoutesBuilder) throws {
-        let routeGroup = routes.grouped("api", "v1", "superuser")
+        let routeGroup = routes.grouped("api", "v1", "user")
         
+        routeGroup.get(use: getAllHandler)
         routeGroup.get(":id", use: getOneHandler)
         routeGroup.post("auth","register",use: createHandler)
         routeGroup.post("auth","login", use: loginHandler)
         routeGroup.put(":id", use: updateBioUser)
         
+    }
+
+    func getAllHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
+        return req.client.get("\(userServiceUrl)/user"){
+            getRequest in 
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+
+            getRequest.headers.add(name: .authorization, value: authHeader)
+            
+        }
     }
     
     func getOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {

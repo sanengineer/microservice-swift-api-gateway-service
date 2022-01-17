@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug Run",
+            "program": "${workspaceFolder}/.build/debug/Run",
+            "args": [],
+            "cwd": "${workspaceFolder:microservice-swift-api-gateway-service}",
+            "preLaunchTask": "swift: Build Debug Run"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release Run",
+            "program": "${workspaceFolder}/.build/release/Run",
+            "args": [],
+            "cwd": "${workspaceFolder:microservice-swift-api-gateway-service}",
+            "preLaunchTask": "swift: Build Release Run"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Test microservices-api-gateway-swift-on-server-for-user",
+            "program": "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+            "args": [
+                ".build/debug/microservices-api-gateway-swift-on-server-for-userPackageTests.xctest"
+            ],
+            "cwd": "${workspaceFolder:microservice-swift-api-gateway-service}",
+            "preLaunchTask": "swift: Build All"
+        }
+    ]
+}
