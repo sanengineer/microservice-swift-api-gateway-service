@@ -84,6 +84,8 @@ func routes(_ app: Application) throws {
     app.http.server.configuration.port = serverPort
 
     try app.register(collection: UserController(userServiceHostname: userHostname, userServicePort: userPort))
+
+    try app.register(collection: RoleController(roleServiceHostname: userHostname, roleServicePort: userPort))
     
     try app.register(collection: ProductController(productServiceHostName: productHostname, productServicePort: productPort))
     

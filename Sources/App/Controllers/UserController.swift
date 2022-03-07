@@ -12,8 +12,9 @@ struct UserController: RouteCollection {
         let routeGroup = routes.grouped("api", "v1", "user")
         
         routeGroup.get(use: getAllHandler)
+        routeGroup.get("count",use: getUsersNumber)
         routeGroup.get(":id", use: getOneHandler)
-        routeGroup.post("auth","register",use: createHandler)
+        routeGroup.post(use: createHandler)
         routeGroup.post("auth","login", use: loginHandler)
         routeGroup.put(":id", use: updateBioUser)
         
@@ -28,6 +29,17 @@ struct UserController: RouteCollection {
 
             getRequest.headers.add(name: .authorization, value: authHeader)
             
+        }
+    }
+
+    func getUsersNumber(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
+        return req.client.get("\(userServiceUrl)/user/count"){
+            getRequest in 
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+
+            getRequest.headers.add(name: .authorization, value: authHeader)
         }
     }
     
@@ -50,7 +62,7 @@ struct UserController: RouteCollection {
     
     func createHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
         
-        return req.client.post("\(userServiceUrl)/user/auth/register") {
+        return req.client.post("\(userServiceUrl)/user") {
             createRequest in
             try createRequest.content.encode(req.content.decode(CreateUserData.self))
         }

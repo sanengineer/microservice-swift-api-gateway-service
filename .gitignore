@@ -9,3 +9,5 @@ db.sqlite
 .swiftpm
 Package.resolved
 *.resolved
+.vscode
+launch.json
