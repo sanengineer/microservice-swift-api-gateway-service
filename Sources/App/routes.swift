@@ -2,7 +2,7 @@ import Vapor
 
 func routes(_ app: Application) throws {
     let userHostname: String
-    // let userUrl: String = Environment.get("USER_URL")!
+    let _userUrl: String = Environment.get("USER_URL")!
     let userUrl: String
     let productHostname: String
     let orderHostname: String
@@ -31,7 +31,7 @@ func routes(_ app: Application) throws {
     if let userUrlEnv = Environment.get("USER_URL"){
         userUrl = "http://\(userUrlEnv)"
     } else {
-        userUrl = "http://localhost:\(userPort)"
+        userUrl = _userUrl
     }
     
     
