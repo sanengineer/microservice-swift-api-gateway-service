@@ -16,12 +16,19 @@ func routes(_ app: Application) throws {
     let orderPort: String = Environment.get("ORDER_PORT")!
     let varianPort: String = Environment.get("VARIAN_PORT")!
     let categoryPort: String = Environment.get("CATEGORY_PORT")!
-    let serverPort: Int = Int(Environment.get("SERVER_PORT")!)!
+    // let serverPort: Int = Int(Environment.get("SERVER_PORT")!)!
+    let serverPort: Int
 
     guard let serverHostname = Environment.get("SERVER_HOSTNAME") else {
         return print("No Env Server Hostname")
     }
     
+    if let serverEnvPort = Environment.get("SERVER_PORT") {
+        serverPort = Int(serverEnvPort) ?? 8081
+    } else {
+        serverPort = 8081
+    }
+
     if let userEnvHostname = Environment.get("USER_HOSTNAME"){
         userHostname = userEnvHostname
     } else {
