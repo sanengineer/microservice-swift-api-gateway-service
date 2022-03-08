@@ -2,6 +2,7 @@ import Vapor
 
 func routes(_ app: Application) throws {
     let userHostname: String
+    let userUrl: String
     let productHostname: String
     let orderHostname: String
     let cartHostname: String
@@ -24,6 +25,12 @@ func routes(_ app: Application) throws {
         userHostname = userEnvHostname
     } else {
         userHostname = "localhost"
+    }
+
+    if let userUrlEnv = Environment.get("USER_URL"){
+        userUrl = userUrlEnv
+    } else {
+        userUrl = "http://localhost:\(userPort)"
     }
     
     
@@ -83,7 +90,9 @@ func routes(_ app: Application) throws {
     app.http.server.configuration.hostname = serverHostname
     app.http.server.configuration.port = serverPort
 
-    try app.register(collection: UserController(userServiceHostname: userHostname, userServicePort: userPort))
+    // try app.register(collection: UserController(userServiceHostname: userHostname, userServicePort: userPort))
+
+    try app.register(collection: UserController(_userServiceUrl: userUrl ))
 
     try app.register(collection: RoleController(roleServiceHostname: userHostname, roleServicePort: userPort))
     
