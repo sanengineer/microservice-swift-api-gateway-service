@@ -8,9 +8,9 @@ defer { app.shutdown() }
 try configure(app)
 
 //log
-// print(env,"\n")
-// print(app.routes,"\n")
-// print(try configure(app), "\n")
+print(env,"\n")
+print(app.routes,"\n")
+print(try configure(app), "\n")
 
 try app.run()
 
