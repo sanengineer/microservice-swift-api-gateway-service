@@ -4,8 +4,8 @@ struct RoleController: RouteCollection {
 
     let roleServiceUrl: String
 
-    init(roleServiceHostname: String, roleServicePort: String){
-        roleServiceUrl = "http://\(roleServiceHostname):\(roleServicePort)"
+    init(_roleServiceUrl: String) {
+        roleServiceUrl = "\(_roleServiceUrl)"
     }
 
     func boot(routes: RoutesBuilder) throws {

@@ -102,7 +102,7 @@ func routes(_ app: Application) throws {
 
     try app.register(collection: UserController(_userServiceUrl: userUrl ))
 
-    // try app.register(collection: RoleController(roleServiceHostname: userHostname, roleServicePort: userPort))
+    try app.register(collection: RoleController(_roleServiceUrl: userUrl ))
     
     // try app.register(collection: ProductController(productServiceHostName: productHostname, productServicePort: productPort))
     
