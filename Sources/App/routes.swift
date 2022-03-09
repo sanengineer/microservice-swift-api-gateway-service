@@ -17,17 +17,17 @@ func routes(_ app: Application) throws {
     // let varianPort: String = Environment.get("VARIAN_PORT")!
     // let categoryPort: String = Environment.get("CATEGORY_PORT")!
     // let serverPort: Int = Int(Environment.get("SERVER_PORT")!)!
-    let serverPort: Int
+    // let serverPort: Int
 
-    guard let serverHostname = Environment.get("SERVER_HOSTNAME") else {
-        return print("No Env Server Hostname")
-    }
+    // guard let serverHostname = Environment.get("SERVER_HOSTNAME") else {
+    //     return print("No Env Server Hostname")
+    // }
     
-    if let serverEnvPort = Environment.get("SERVER_PORT") {
-        serverPort = Int(serverEnvPort) ?? 8081
-    } else {
-        serverPort = 8081
-    }
+    // if let serverEnvPort = Environment.get("SERVER_PORT") {
+    //     serverPort = Int(serverEnvPort) ?? 8081
+    // } else {
+    //     serverPort = 8081
+    // }
 
     // if let userEnvHostname = Environment.get("USER_HOSTNAME"){
     //     userHostname = userEnvHostname
@@ -95,8 +95,8 @@ func routes(_ app: Application) throws {
     
     
     app.logger.logLevel = .debug
-    app.http.server.configuration.hostname = serverHostname
-    app.http.server.configuration.port = serverPort
+    // app.http.server.configuration.hostname = serverHostname
+    // app.http.server.configuration.port = serverPort
 
     // try app.register(collection: UserController(userServiceHostname: userHostname, userServicePort: userPort))
 
