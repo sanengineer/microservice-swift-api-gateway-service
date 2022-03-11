@@ -4,10 +4,9 @@ struct ProductController: RouteCollection {
     
     let productServiceUrl:String
     
-    init(productServiceHostName: String, productServicePort: String) {
-        productServiceUrl = "http://\(productServiceHostName):\(productServicePort)"
+    init(_productServiceUrl: String) {
+        productServiceUrl = "\(_productServiceUrl)"
     }
-    
     
     func boot(routes: RoutesBuilder) throws {
         let productRouteGroup = routes.grouped("api", "v1", "product")

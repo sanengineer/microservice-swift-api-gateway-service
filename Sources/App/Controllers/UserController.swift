@@ -6,10 +6,6 @@ struct UserController: RouteCollection {
     init(_userServiceUrl: String) {
         userServiceUrl = "\(_userServiceUrl)"
     }
-     
-    //  init(userServiceHostname: String, userServicePort: String) {
-    //     userServiceUrl = "http://\(userServiceHostname):\(userServicePort)"
-    //  }
     
     func boot(routes: RoutesBuilder) throws {
         let routeGroup = routes.grouped("api", "v1", "user")
