@@ -11,13 +11,29 @@ struct ProductController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let productRouteGroup = routes.grouped("api", "v1", "product")
         
-        productRouteGroup.get( use: getAllHandler)
-        productRouteGroup.get( ":product_id", use: getOneHandler)
-        productRouteGroup.get( "count", use: getCountHandler)
-        productRouteGroup.get( "result", use: getSearchHandler)
-        
+        productRouteGroup.post(use: createHandler)
+        productRouteGroup.get(use: getAllHandler)
+        productRouteGroup.get(":product_id", use: getOneHandler)
+        // productRouteGroup.put(":product_id", use: updateCategoryId)
+        productRouteGroup.put(":product_id", use: updateOneHandler)
+        productRouteGroup.delete(":product_id", use: deleteOneHandler)
+        productRouteGroup.get("count", use: getCountHandler)
+        productRouteGroup.get("result", use: getSearchHandler)   
     }
     
+    
+    func createHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
+        return req.client.post("\(productServiceUrl)/product"){
+            getRequest in
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            getRequest.headers.add(name: .authorization, value: authHeader)
+
+            try getRequest.content.encode(req.content.decode(CreateProductData.self))
+        }
+    }
     
     func getAllHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
         return req.client.get("\(productServiceUrl)/product"){
@@ -69,5 +85,32 @@ struct ProductController: RouteCollection {
             getRequest.headers.add(name: .authorization, value: authHeader)
         }
     }
-    
+
+    func updateOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
+        let id = try req.parameters.require("id", as: UUID.self)
+
+        return req.client.put("\(productServiceUrl)/product/\(id)"){
+            getRequest in
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            getRequest.headers.add(name: .authorization, value: authHeader)
+
+            try getRequest.content.encode(req.content.decode(CreateProductData.self))
+        }
+    }
+
+    func deleteOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
+        let id = try req.parameters.require("id", as: UUID.self)
+
+        return req.client.delete("\(productServiceUrl)/product/\(id)"){
+            getRequest in
+            guard let authHeader = req.headers[.authorization].first else {
+                throw Abort(.unauthorized)
+            }
+            
+            getRequest.headers.add(name: .authorization, value: authHeader)
+        }
+    }
 }

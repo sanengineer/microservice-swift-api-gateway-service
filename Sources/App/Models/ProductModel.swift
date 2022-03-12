@@ -2,7 +2,7 @@ import Vapor
 
 struct CreateProductData: Content {
     let name: String
-    let descriptions: String
+    let description: String
     let price: Int
     let image_featured: String
 }
