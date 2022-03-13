@@ -87,7 +87,7 @@ struct ProductController: RouteCollection {
     }
 
     func updateOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
-        let id = try req.parameters.require("id", as: UUID.self)
+        let id = try req.parameters.require("product_id", as: UUID.self)
 
         return req.client.put("\(productServiceUrl)/product/\(id)"){
             getRequest in
@@ -102,7 +102,7 @@ struct ProductController: RouteCollection {
     }
 
     func deleteOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
-        let id = try req.parameters.require("id", as: UUID.self)
+        let id = try req.parameters.require("product_id", as: UUID.self)
 
         return req.client.delete("\(productServiceUrl)/product/\(id)"){
             getRequest in
