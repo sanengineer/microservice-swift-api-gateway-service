@@ -97,7 +97,7 @@ struct ProductController: RouteCollection {
             
             getRequest.headers.add(name: .authorization, value: authHeader)
 
-            try getRequest.content.encode(req.content.decode(CreateProductData.self))
+            try getRequest.content.encode(req.content.decode(ProductDataUpdate.self))
         }
     }
 
