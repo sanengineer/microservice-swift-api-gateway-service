@@ -1,6 +1,22 @@
 import Vapor
 
-struct CreateItemData: Content {
-    let product_id: String
-    let cart_id: String
+struct ItemCreate: Content {
+    let product_id: UUID
+    let cart_id: UUID
+    let topping_id: UUID
+    let varian_id: UUID
+    let user_id: UUID
 }
+
+struct ItemUpdate: Content {
+    let product_id: UUID?
+    let cart_id: UUID?
+    let topping_id: UUID?
+    let varian_id: UUID?
+    let user_id: UUID?
+}
+
+
+ 
+
+   

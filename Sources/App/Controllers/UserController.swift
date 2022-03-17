@@ -16,7 +16,6 @@ struct UserController: RouteCollection {
         routeGroup.post(use: createHandler)
         routeGroup.post("auth","login", use: loginHandler)
         routeGroup.put(":id", use: updateBioUser)
-        
     }
 
     func getAllHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
@@ -37,30 +36,22 @@ struct UserController: RouteCollection {
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)
             }
-
             getRequest.headers.add(name: .authorization, value: authHeader)
         }
     }
     
     func getOneHandler(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
-        
         let id = try req.parameters.require("id", as: UUID.self)
         return req.client.get("\(userServiceUrl)/user/\(id)"){ get in
-            
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)
             }
-            
-            //
-            print("\n","TOKENNN", authHeader, "\n")
-            
             get.headers.add(name: .authorization, value: authHeader)
         }
     }
     
     
     func createHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
-        
         return req.client.post("\(userServiceUrl)/user") {
             createRequest in
             try createRequest.content.encode(req.content.decode(CreateUserData.self))
@@ -69,25 +60,19 @@ struct UserController: RouteCollection {
     
     func updateBioUser(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
         let id = try req.parameters.require("id", as: UUID.self)
-        
         return req.client.put("\(userServiceUrl)/user/\(id)"){
             put in
-            
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)
             }
-            
             put.headers.add(name: .authorization, value: authHeader)
-            
             try put.content.encode(req.content.decode(UpdateUserBio.self))
         }
     }
     
     
     func loginHandler(_ req: Request) -> EventLoopFuture<ClientResponse> {
-        
-        return req.client.post("\(userServiceUrl)/user/auth/login") { loginRequst in
-            
+        return req.client.post("\(userServiceUrl)/user/auth/login") { loginRequst in 
             guard let authHeader = req.headers[.authorization].first else {
                 throw Abort(.unauthorized)
             }
