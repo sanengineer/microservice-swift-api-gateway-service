@@ -41,7 +41,7 @@ struct ImageController: RouteCollection {
 
     func getOneHandlerByUserId(_ req: Request) throws -> EventLoopFuture<ClientResponse> {
         let id = try req.parameters.require("user_id", as: UUID.self)
-        let query = try req.content.decode(ImageQuery.self)
+        let query = try req.query.decode(ImageQuery.self)
         return req.client.get("\(imageServiceUrl)/image/\(id)?type=\(query.type)"){
             getRequest in
             guard let authHeader = req.headers[.authorization].first else {
