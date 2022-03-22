@@ -14,3 +14,8 @@ struct ImageDelete: Content{
 struct ImageType: Content{
     let type: String
 }
+
+struct ImageQuery: Content {
+    let user_id: UUID
+    let type: String
+}
