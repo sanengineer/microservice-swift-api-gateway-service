@@ -10,6 +10,7 @@ func routes(_ app: Application) throws {
     let varianUrl: String
     let toppingUrl: String
     let itemUrl: String
+    let imageUrl: String
  
     guard let userUrlEnv = Environment.get("USER_URL") else {
         return print("No Env User URL")
@@ -35,6 +36,9 @@ func routes(_ app: Application) throws {
     guard let itemUrlEnv = Environment.get("ITEM_URL") else {
         return print("No Env Item Hostname")
     }
+    guard let imageUrlEnv = Environment.get("IMAGE_URL") else {
+        return print("No Env Image Hostname")
+    }
 
     userUrl = "\(userUrlEnv)"
     productUrl = "\(productUrlEnv)"
@@ -44,6 +48,7 @@ func routes(_ app: Application) throws {
     varianUrl = "\(varianUrlEnv)"
     toppingUrl = "\(toppingUrlEnv)"
     itemUrl = "\(itemUrlEnv)"
+    imageUrl = "\(imageUrlEnv)"
 
     try app.register(collection: UserController(_userServiceUrl: userUrl ))
     try app.register(collection: RoleController(_roleServiceUrl: userUrl ))
@@ -54,4 +59,5 @@ func routes(_ app: Application) throws {
     try app.register(collection: VarianController(_varianServiceUrl: varianUrl))
     try app.register(collection: ToppingController(_toppingServiceUrl: toppingUrl))
     try app.register(collection: ItemController(_itemServiceUrl: itemUrl))
+    try app.register(collection: ImageController(_imageServiceUrl: imageUrl))
 }
