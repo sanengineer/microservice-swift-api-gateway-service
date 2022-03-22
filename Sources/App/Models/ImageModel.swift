@@ -16,6 +16,5 @@ struct ImageType: Content{
 }
 
 struct ImageQuery: Content {
-    let user_id: UUID
     let type: String
 }
